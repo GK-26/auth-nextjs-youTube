@@ -27,9 +27,10 @@ export async function POST(request: NextRequest){
         const newUser = new User({
             username,
             email,
-            password
+            password: hashedPassword
         })
-        const savedUser = newUser.save();
+        console.log(`hasPass ${hashedPassword}`)
+        const savedUser = await newUser.save();
 
         return NextResponse.json({
             message: "user created successfully",
@@ -37,6 +38,11 @@ export async function POST(request: NextRequest){
             savedUser},
             { status: 201})
     }catch(error){
-
+        console.log(`Signup faileds: ${error}`);
+        
+        return NextResponse.json({
+          message: "signup failed",
+            success: false
+        }, {status: 500})
     }
 }
